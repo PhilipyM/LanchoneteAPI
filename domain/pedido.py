@@ -1,7 +1,6 @@
 from typing import List
 from domain.cliente import Cliente
 from domain.produto import Produto
-from repositories.memory import db
 
 class Pedido:
     """Representa um pedido realizado por um cliente.

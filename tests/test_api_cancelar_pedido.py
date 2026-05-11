@@ -15,10 +15,10 @@ def test_deve_cancelar_pedido_com_sucesso(client):
     data = response.json()
 
     # TODO: validar se data["ok"] é True
-    assert data == "ok"
+    assert data['ok'] == True
 
     # TODO: validar mensagem de sucesso
-    assert data == "Pedido cancelado com sucesso"
+    assert data['mensagem'] == "Pedido cancelado com sucesso"
 
 def test_nao_deve_cancelar_pedido_inexistente(client):
     response = client.post("/lanchonete/pedidos/999/cancelar")
@@ -29,7 +29,7 @@ def test_nao_deve_cancelar_pedido_inexistente(client):
     data = response.json()
 
     # TODO: validar mensagem de erro
-    assert data == "Pedido não encontrado ou não pode ser cancelado"
+    assert data['detail'] == "Pedido não encontrado ou não pode ser cancelado"
 
 def test_nao_deve_cancelar_pedido_finalizado(client):
     # TODO: criar cliente

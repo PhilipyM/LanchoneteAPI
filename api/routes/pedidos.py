@@ -45,6 +45,26 @@ def finalizar(cod_pedido: int):
     return {"total": total}
 
 
+@router.get("/cancelados", response_model=list[PedidoOut])
+def listar_pedidos_cancelados():
+    pedidos = service.listar_pedidos_cancelados()
+
+    resposta = []
+
+    for pedido in pedidos:
+        # TODO: montar o PedidoOut corretamente
+        resposta.append(
+            PedidoOut(
+                codigo=pedido.codigo,
+                cpf=pedido.cliente.cpf,
+                esta_entregue=pedido.esta_entregue,
+                esta_cancelado=pedido.esta_cancelado,
+                produtos=[p.codigo for p in pedido.listaProdutos]  # TODO: retornar os códigos dos produtos
+            )
+        )
+
+    return resposta
+
 @router.get("/{cod_pedido}", response_model=PedidoOut)
 def obter(cod_pedido: int):
     """Busca um pedido pelo código."""
@@ -72,23 +92,3 @@ def cancelar_pedido(cod_pedido: int):
         "ok": True,
         "mensagem": "Pedido cancelado com sucesso"
     }
-
-@router.get("/cancelados", response_model=list[PedidoOut])
-def listar_pedidos_cancelados():
-    pedidos = service.listar_pedidos_cancelados()
-
-    resposta = []
-
-    for pedido in pedidos:
-        # TODO: montar o PedidoOut corretamente
-        resposta.append(
-            PedidoOut(
-                codigo=pedido.codigo,
-                cpf=pedido.cliente.cpf,
-                esta_entregue=pedido.esta_entregue,
-                esta_cancelado=pedido.esta_cancelado,
-                produtos=[p.codigo for p in pedido.listaProdutos]  # TODO: retornar os códigos dos produtos
-            )
-        )
-
-    return resposta
